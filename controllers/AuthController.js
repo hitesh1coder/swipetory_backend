@@ -26,7 +26,7 @@ const registerUser = async (req, res) => {
       const jwtToken = jwt.sign(
         { username, password: encryptedPassword },
         process.env.JWT_SECRECT_KEY,
-        { expiresIn: 6000 }
+        { expiresIn: 1800 }
       );
       return res.send({
         username: user.username,
@@ -56,7 +56,7 @@ const loginUser = async (req, res) => {
 
       if (matchPassword) {
         const jwtToken = jwt.sign({ username }, process.env.JWT_SECRECT_KEY, {
-          expiresIn: 6000,
+          expiresIn: 1800,
         });
 
         res.status(200).send({

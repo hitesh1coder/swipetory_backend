@@ -89,10 +89,8 @@ const addToBookmark = async (req, res) => {
 const updateStory = async (req, res) => {
   const storyId = req.params.id;
   const { userId } = req.body;
-
   try {
     const story = await StoryModel.findById(storyId);
-
     if (story.userId === userId) {
       await story.updateOne({ $set: req.body });
       res.status(200).json("Post Updated");

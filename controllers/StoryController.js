@@ -27,7 +27,7 @@ const createStory = async (req, res) => {
     }
   } catch (error) {
     console.error("Error saving forms:", error);
-    res.status(500).json({ error: "An error occurred" });
+    res.status(501).json({ error: "An error occurred" });
   }
 };
 
@@ -57,6 +57,22 @@ const getFilteredStories = async (req, res) => {
     return res.status(500).json(error);
   }
 };
+// Update a story
+const updateStory = async (req, res) => {
+  const storyId = req.params.id;
+  const { userId } = req.body;
+  try {
+    const story = await StoryModel.findById(storyId);
+    if (story.userId === userId) {
+      await story.updateOne({ $set: req.body });
+      res.status(200).json("Post Updated");
+    } else {
+      res.status(403).json("Action forbidden");
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
 
 const getSingleStory = async (req, res) => {
   try {
@@ -81,22 +97,6 @@ const addToBookmark = async (req, res) => {
       status: "SUCCESS",
       bookMarkedStories: user.bookmarksStories,
     });
-  } catch (error) {
-    res.status(500).json(error);
-  }
-};
-// Update a story
-const updateStory = async (req, res) => {
-  const storyId = req.params.id;
-  const { userId } = req.body;
-  try {
-    const story = await StoryModel.findById(storyId);
-    if (story.userId === userId) {
-      await story.updateOne({ $set: req.body });
-      res.status(200).json("Post Updated");
-    } else {
-      res.status(403).json("Action forbidden");
-    }
   } catch (error) {
     res.status(500).json(error);
   }

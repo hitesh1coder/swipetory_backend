@@ -10,7 +10,7 @@ module.exports = (req, res, next) => {
     req.user = decoded.userId;
     next();
   } catch (e) {
-    console.error(e);
     res.status(500).send({ message: "Session Expaires Please Login Again" });
+    console.error(e);
   }
 };
